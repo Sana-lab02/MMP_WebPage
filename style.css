@@ -290,12 +290,14 @@ h3 {
   opacity: 0;
   display: flex;
   flex-direction: column;
-  animation: industrialCrossFade 18s infinite ease-in-out;
+  animation: industrialCrossFade 24s infinite ease-in-out;
 }
 
 .slide-item:nth-child(1) { animation-delay: 0s; }
 .slide-item:nth-child(2) { animation-delay: 6s; }
 .slide-item:nth-child(3) { animation-delay: 12s; }
+.slide-item:nth-child(4) { animation-delay: 18s; } 
+
 
 
 .slide-image-frame {
@@ -349,11 +351,13 @@ h3 {
     opacity: 0;
     z-index: 10;
   }
-  2%, 31% {
+
+  2%, 21% {
     opacity: 1;
     z-index: 50;
   }
-  36%, 100% {
+  
+  25%, 100% {
     opacity: 0;
     z-index: 10;
   }
@@ -714,7 +718,7 @@ h3 {
 }
 
 /* ==========================================================================
-   8. CONTACT FORM & SYSTEM RUN TILES
+   8. CONTACT DIRECTORY & FACILITY GALLERY
    ========================================================================== */
 .contact-section {
   background: #141618;
@@ -799,87 +803,120 @@ h3 {
   margin-top: 20px;
 }
 
-.contact-form {
-  display: grid;
-  gap: 16px;
-}
-
-.form-group {
-  display: grid;
-  gap: 6px;
-}
-
-.form-group label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 12px;
+/* --- New Simplified Image Gallery Elements --- */
+.gallery-container {
+  background: var(--bg-surface);
   border: 1px solid var(--line);
-  background: var(--bg);
-  color: #ffffff;
-  font-family: inherit;
-  font-size: 0.9rem;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-
-.contact-actions {
+  box-shadow: var(--shadow);
+  padding: 32px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-top: 16px;
+  flex-direction: column;
+  height: 100%;
+  min-height: 480px; 
+  box-sizing: border-box;
 }
 
-.contact-button {
-  border: none;
-  background: var(--accent);
-  color: var(--bg);
-  padding: 14px 28px;
-  cursor: pointer;
-}
-
-.contact-button:hover {
-  background: #ffffff;
-}
-
-.contact-button.secondary {
-  background: transparent;
+.gallery-container h3 {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 900;
+  font-size: 1.5rem;
   color: #ffffff;
-  border: 1px solid var(--line);
+  margin-top: 0;
+  margin-bottom: 8px;
 }
 
-.contact-button.secondary:hover {
-  border-color: #ffffff;
-}
-
-.contact-note {
-  border-top: 1px dashed var(--line);
-  padding-top: 24px;
-  margin-top: 24px;
-}
-
-.contact-note p {
-  margin: 6px 0;
-  font-size: 0.85rem;
+.gallery-container p {
   color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
 }
 
+/* Positioning wrapper for arrows and scroll box */
+.slider-viewport-wrapper {
+  position: relative;
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Native Horizontal Scroll Container */
+.image-slider-scroll {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  overflow-x: auto; 
+  scroll-snap-type: x mandatory; 
+  scroll-behavior: smooth;
+  border: 1px solid var(--line);
+  background: #0b0c0d; /* Dark matte backdrop frames contained pictures beautifully */
+  scrollbar-width: none; /* Hides horizontal trackbar in Firefox */
+}
+
+.image-slider-scroll::-webkit-scrollbar {
+  display: none; /* Hides native scroll bars in Chrome, Safari, and Opera */
+}
+
+/* Individual Picture Blocks - FIXED CUTOFF */
+.image-slider-scroll img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Keeps whole picture inside borders without cropping sides */
+  flex-shrink: 0; 
+  scroll-snap-align: center; 
+}
+
+/* Navigation Arrow Button Styling */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(20, 22, 24, 0.85);
+  border: 1px solid var(--line);
+  color: #ffffff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  user-select: none;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.slider-arrow:hover {
+  background: var(--accent, #ffffff);
+  border-color: var(--accent, #ffffff);
+  color: #141618;
+}
+
+.slider-arrow:active {
+  transform: translateY(-50%) scale(0.95); /* Little physical press bounce effect */
+}
+
+.prev-arrow { 
+  left: 16px; 
+}
+
+.next-arrow { 
+  right: 16px; 
+}
+
+/* --- Responsive Layout Breaks --- */
 @media (max-width: 992px) {
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 48px;
   }
+  .gallery-container {
+    min-height: 400px; /* Adapts height for medium tablet displays */
+  }
 }
+
 @media (max-width: 560px) {
   .directory-row {
     flex-direction: column;
@@ -890,7 +927,15 @@ h3 {
     width: 100%;
     text-align: left;
   }
+  .slider-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem; /* Marginally smaller buttons on pocket screens */
+  }
+  .prev-arrow { left: 8px; }
+  .next-arrow { right: 8px; }
 }
+
 
 /* ==========================================================================
    9. SITE FOOTER
